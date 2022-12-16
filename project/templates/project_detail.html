@@ -1,0 +1,369 @@
+{% extends 'landing.html' %}
+{% load static %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-1">
+            <button class="canvas btn btn-primary" style="height: 100%" type="button" data-bs-toggle="offcanvas"
+                    data-bs-target="#offcanvasScrollingg"
+                    aria-controls="offcanvasScrolling">>>
+            </button>
+            <div class="offcanvas offcanvas-start" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+                 id="offcanvasScrollingg" aria-labelledby="offcanvasScrollingLabel"
+                 style="width: 280px; top: 48px; height: 685px">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasScrollingLabel">
+                        <p class="btn text-white px-3 py-2 mt-2 ms-3"
+                           style="background-color: rgb(255, 255, 255, 0.2);)">
+                            <button type="button" class="btn btn-outline-dark" data-bs-toggle="modal"
+                                    data-bs-target="#exampleModal">
+                                Create Project
+                            </button>
+                        </p>
+                    </h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                            aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body">
+                    <p class="h6 text-uppercase mb-3">Your projects</p>
+                    {% for project in all_projects %}
+                        <table class="table table-hover">
+                            <tbody>
+                            <tr>
+                                <th scope="row">{{ forloop.counter }}</th>
+                                <td><a href="{% url "projects:project_detail" project.id %}"
+                                       class="text-decoration-none text-dark"> {{ project.name }}</a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    {% endfor %}
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="col-11">
+            <div class="navbar-bottom">
+                <input type="text" class="btn text-white px-3 py-2 mt-3 mb-4 ms-3"
+                       style="background-color: rgb(255, 255, 255, 0.2);)"
+                       id="staticEmail"
+                       value="{{ project.name }}">
+
+
+                <button class="btn text-white px-3 py-2 mt-3 ms-3 mb-4" type="button" data-bs-toggle="offcanvas"
+                        data-bs-target="#projectmember"
+                        aria-controls="projectmembers" style="background-color: rgb(255, 255, 255, 0.2);)">Add project
+                    member
+                </button>
+                <div class="offcanvas offcanvas" data-bs-scroll="true" data-bs-backdrop="false" tabindex="-1"
+                     id="projectmember" aria-labelledby="projectmembersLabel"
+                     style="width: 280px; top: 110px;left: 345px; height: 400px">
+                    <div class="offcanvas-header">
+                        <h5 class="offcanvas-title text-dark ms-4" id="projectmembersLabel">
+                            Invite to board
+                        </h5>
+                        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                                aria-label="Close"></button>
+                    </div>
+                    <hr>
+                    <div class="offcanvas-body">
+                        <div class="d-flex">
+                            <form method="post" action="{% url 'projects:add_project_member' project.id %}">
+                                {% csrf_token %}
+
+                                <input type="text" style="width: 180px;" class="form-control" name="search"
+                                       id="search"
+                                       placeholder="search user">
+                                <input type="checkbox" name="radio" value="True"/>
+                                <button type="submit" class="btn btn-primary ms-2">search</button>
+                            </form>
+                        </div>
+
+
+                        {#---------------------Search------------------------------------------------------#}
+                        {##}
+                        {#                        {% for u in user %}#}
+                        {#                            <table class="table table-hover">#}
+                        {#                                <tbody>#}
+                        {#                                <tr>#}
+                        {#                                    <th scope="row">{{ forloop.counter }}</th>#}
+                        {#                                    <td><a href="#" class="text-decoration-none text-dark">{{ u }}</a>#}
+                        {#                                    </td>#}
+                        {#                                </tr>#}
+                        {#                                </tbody>#}
+                        {#                            </table>#}
+                        {#                        {% endfor %}#}
+
+                        {#---------------------Search------------------------------------------------------#}
+
+                        <h6 class="mt-4"><strong>Invite with link</strong></h6>
+                        <p style="font-size: 13px">Guests that are already on another Workspace board can only be added
+                            via email address.</p>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <div class="overflow-auto h-75">
+                <div class="d-inline-flex">
+                    {% for x in project_column %}
+                        <div class='column'>
+                            <div class="column-head">
+                                <input type="text" class="form-control-plaintext mt-2 fw-bold" style="color: #444"
+                                       id="staticEmail"
+                                       value="{{ x.name }}">
+                                <div>
+                                    <form action="{% url 'projects:column_delete' x.pk %}" method="post">
+                                        {% csrf_token %}
+                                        <button type="submit" class="border-0">
+                                            <img src="{% static 'images/delete.png' %}" style="margin-top: 12px"
+                                                 width="20" alt=""></button>
+                                    </form>
+                                </div>
+                            </div>
+
+
+                            {% for task in tasks %}
+                                {% if task.column_id == x.id %}
+                                    <div class="task" style="color: black">
+                                        <button type="button" style="width: 100%; background: none; border: none;
+                                        text-align: left;" data-bs-toggle="modal" data-bs-target="#{{ task.name }}">
+                                            {{ task.name }}
+                                        </button>
+                                    </div>
+
+
+
+                                    <div class="modal fade" id="{{ task.name }}" tabindex="-1"
+                                         aria-labelledby="{{ task.name }}Label" aria-hidden="true">
+                                        <div class="modal-dialog modal-lg">
+                                            <div class="modal-content">
+
+                                                {% csrf_token %}
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title"
+                                                        id="{{ task.name }}Label">{{ task.name }}</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                            aria-label="Close"></button>
+                                                </div>
+
+                                                <div class="modal-body">
+                                                    <div class="row">
+                                                        <div class="col-9">
+                                                            <div>
+                                                                <h6>Description</h6>
+                                                                <form class="d-flex align-items-center "
+                                                                      style="height: 38px" action="" method="post">
+                                                                    {% csrf_token %}
+                                                                    <input type="text"
+                                                                           placeholder="Add a detailed description..."
+                                                                           name="description"
+                                                                           style="width: 100%; background-color: whitesmoke;
+                                                                                                height: 58px;
+                                                                                                border-radius: 5px;
+                                                                                                padding-left: 13px;
+                                                                                                margin-top: 10px;
+                                                                                                border: 1px solid lightgrey;">
+                                                                    <button class="btn ms-2 btn-primary" type="submit">
+                                                                        save
+                                                                    </button>
+                                                                </form>
+
+                                                            </div>
+                                                            <div class="mt-4">
+                                                                <h6>Activity</h6>
+                                                                <div class="d-flex mt-3">
+                                                                    <button style="height: 40px;width: 40px;border-radius: 50%;
+                                                                         background-color: deepskyblue; color: white;margin-right: 3px"
+                                                                            type="button">
+                                                                        {{ user.first_name | slice:1 }}{{ user.last_name | slice:1 }}
+                                                                    </button>
+                                                                    <form class="d-flex w-100" style="height: 38px"
+                                                                          action="{% url 'tasks:create_comment' task.id %}"
+                                                                          method="post">
+                                                                        {% csrf_token %}
+                                                                        <input type="text" name="comment"
+                                                                               placeholder="Write a comment..."
+                                                                               style="width: 100%;
+                                                                                    height: 38px;
+                                                                                    padding-left: 13px;
+                                                                                    border-radius: 5px;
+                                                                                    border: 1px solid lightgrey;">
+                                                                        <button type="submit"
+                                                                                class="btn ms-2 btn-success">save
+                                                                        </button>
+                                                                    </form>
+
+
+                                                                </div>{% for comment in comments %}
+                                                                {% if task.id ==  comment.task_id %}
+                                                                    <div class="d-flex align-items-center mt-4">
+                                                                        <div>
+                                                                            <button style="height: 40px;width: 40px;border-radius: 50%;
+                                                                         background-color: deepskyblue; color: white;margin-right: 3px"
+                                                                                    type="button">
+                                                                                {{ user.first_name | slice:1 }}{{ user.last_name | slice:1 }}
+                                                                            </button>
+                                                                        </div>
+                                                                        <div style="
+                                                                        border-radius: 6px;
+                                                                        border: 1px solid lightgray;
+                                                                        display: flex;
+                                                                        justify-content: start;
+                                                                        align-items: center;
+                                                                        height: 43px;
+                                                                        padding-right: 7px;
+                                                                        padding-left: 8px;">
+                                                                            {{ comment.comment }}
+                                                                        </div>
+                                                                    </div>
+
+
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="col-3 ">
+                                                            <div>
+                                                                <h2 class="mb-2 text-secondary"
+                                                                    style="font-size: 12px; ">Add to card</h2>
+                                                            </div>
+                                                            <a href="#" class="btn btn-secondary mb-2"
+                                                               style="width: 170px;">Members</a>
+                                                            <a href="#" class="btn btn-secondary mb-2"
+                                                               style="width: 170px;">Labels</a>
+                                                            <a href="#" class="btn btn-secondary mb-2"
+                                                               style="width: 170px;">Checklist</a>
+                                                            <a href="#" class="btn btn-secondary mb-2"
+                                                               style="width: 170px;">Dates</a>
+                                                            <a href="#" class="btn btn-secondary mb-2"
+                                                               style="width: 170px;">Attachment</a>
+                                                            <a href="#" class="btn btn-secondary mb-2"
+                                                               style="width: 170px;">Location</a>
+                                                            <a href="#" class="btn btn-secondary mb-2"
+                                                               style="width: 170px;">Cover</a>
+                                                            <a href="#" class="btn btn-secondary mb-2"
+                                                               style="width: 170px;">Custom fields</a>
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="modal-footer border-top-0">
+                                                    <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close
+                                                    </button>
+                                                    <button type="submit" class="btn btn-primary">Save changes
+                                                    </button>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                {% endif %}
+                            {% endfor %}
+
+
+
+
+                            <div class="project-column">
+                                <button onclick=ss('{{ x.id }}') id="ss{{ x.id }}" class="btn p-0 text-secondary py-2  "
+                                ><img src="{% static 'images/x.svg' %}" style="transform: rotate(45deg)" width="18"
+                                      alt="">
+                                    Add task
+                                </button>
+                                <div style="display: none" id="script{{ x.id }}">
+                                    <section>
+                                        {% if messages %}
+                                            <ul class="messages">
+                                                {% for message in messages %}
+                                                    <div{% if message.tags %}
+                                                        class="alert alert-{{ message.tags }} alert-dismissible fade show" {% endif %}
+                                                        role="alert">
+                                                        {{ message }}
+                                                        <button type="button" class="btn-close"
+                                                                data-bs-dismiss="alert"
+                                                                aria-label="Close"></button>
+                                                    </div>
+                                                {% endfor %}
+                                            </ul>
+                                        {% endif %}
+                                    </section>
+                                    <form action="{% url 'tasks:task_create' x.id %}" method="post">
+                                        {% csrf_token %}
+                                        <textarea placeholder="enter a title for this task" name="task_name"></textarea>
+                                        <div class="d-flex mb-3">
+                                            <button onclick=remove('{{ x.id }}') class="save-input btn" type="submit">
+                                                Add task
+                                            </button>
+                                            <img src="{% static 'images/x.svg' %}" class="ms-3  "
+                                                 style="cursor: pointer;" onclick=remove()
+                                                 width="23" alt=""/>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    <div class="project-column">
+                        <button onclick=ss('{{ x.id }}') id="ss" class="btn text-white px-3 py-2 mt-2 ms-3"
+                                style="width: 277px; text-align: left;
+                    background-color: rgb(255, 255, 255, 0.2);">
+                            <img src="{% static 'images/plus (5).svg' %}" alt="">
+                            Add project column
+                        </button>
+                        <div style="display: none" class="mt-2 ms-3" id="script">
+                            <form action="{% url 'projects:project_detail' project.pk %}" method="post">
+                                {% csrf_token %}
+                                <input type="text" name="column" placeholder="Enter column title...">
+                                <div class="d-flex ">
+                                    <button onclick=remove() class="save-input btn" type="submit">Add column
+                                    </button>
+                                    <img src="{% static 'images/x.svg' %}" class="ms-3 mb-2 mt-1 "
+                                         style="cursor: pointer;" onclick=remove('{{ x.id }}')
+                                         width="23" alt=""/>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <a style="position: fixed;
+               right: 0;
+                bottom: 0" href="{% url 'projects:project_delete' project.pk %}" class="btn  btn-danger m-2"><img
+                    src="{% static 'images/delete.png' %}" width="30" alt=""></a>
+        </div>
+    </div>
+
+
+    <script>
+        var path = document.getElementById('script')
+
+        function ss(id) {
+            if (path.style.display == 'none') {
+                document.getElementById('script' + id).style.display = 'block';
+                document.getElementById('ss' + id).style.display = 'none';
+            }
+        }
+
+        function remove() {
+            if (path.style.display == 'block') {
+                document.getElementById('script').style.display = 'none';
+                document.getElementById('ss').style.display = 'block';
+            }
+        }
+
+
+    </script>
+
+{% endblock %}
+

@@ -1,0 +1,79 @@
+body {
+    height: 100vh;
+    overflow-y: hidden;
+    background: linear-gradient(rgb(234, 230, 255), rgb(255, 255, 255)) no-repeat;
+    color: rgb(9, 30, 66);
+}
+
+
+body .main {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+body .main .img {
+    margin-top: 20px;
+    margin-left: 20px;
+}
+
+body .main a {
+    margin-bottom: 0;
+    font-size: 17px;
+    font-weight: 500;
+    margin-right: 27px;
+}
+
+
+body .center-page {
+    display: flex;
+    justify-content: space-between;
+}
+
+body .center {
+    text-align: left;
+    display: block;
+    flex: 0 0 auto;
+    width: 738px;
+    padding-top: 8rem;
+    margin-left: 132px;
+    margin-top: 99px;
+}
+
+body .center h1 {
+    font-size: 3rem;
+    line-height: 1.25;
+}
+
+body .center p {
+    font-family: "Charlie Text", sans-serif;
+    font-size: 24px;
+    font-weight: 400;
+    line-height: 1.5;
+}
+
+body .center-page img {
+    width: 472px;
+    margin-top: 100px;
+    margin-right: 49px;
+}
+
+
+body .center-page .email-inp .email-input {
+    font-size: 1.25rem;
+    padding: 0.4rem 0.75rem 0.5rem;
+    border: 1px solid rgb(223, 225, 230);
+    border-radius: 0.3rem;
+    display: block;
+    margin-bottom: 1rem;
+    margin-right: 1rem;
+    max-width: 436px;
+    transition: all 250ms ease-out 0s;
+    width: 424px;
+}
+
+body .center-page .email-inp .email-input::placeholder {
+    font-weight: 600;
+    color: darkgray;
+    font-family: sans-serif;
+}
