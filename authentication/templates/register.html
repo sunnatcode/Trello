@@ -1,0 +1,78 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SignUp Page</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
+          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'css/login.css' %}">
+</head>
+<body>
+
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-4">
+            <img src="{% static 'images/qulo.png' %}" width="420" class="position-fixed fixed-bottom" alt="">
+        </div>
+        <div class="col-4 mt-5 text-center">
+            <div>
+                <a href="{% url "home_page" %}"><img src="{% static 'images/trello.png' %}" width="200" alt=""></a>
+            </div>
+            <div class="cart">
+                <h1>Вход в Trello</h1>
+                <div class="send-email">
+                    <form method="post" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <input type="text" class="email" id="username" name="username" placeholder="username">
+                        <input type="text" class="email" id="first_name" name="first_name" placeholder="firstname">
+                        <input type="text" class="email" id="last_name" name="last_name" placeholder="last_name">
+                        <input type="text" class="email" id="phone" name="phone" placeholder="phone">
+                        <input type="email" class="email" id="email" name="email" placeholder="email">
+                        <input type="file" class="email" id="file" name="file">
+                        <input type="password" class="email" id="password" name="password" placeholder="password">
+                        <input type="password" class="email" id="re_password" name="re_password"
+                               placeholder="re-password">
+                        <input type="submit" class="btn btn-success btn-block mt-4" value="register">
+                    </form>
+                    <p class="text-secondary mt-3" style="font-size: 21px">or</p>
+                </div>
+                <div class="link">
+                    <div class="box">
+                        <a href="#" class="d-flex">
+                            <img src="{% static 'images/download.png' %}" width="40" alt="">
+                            <p class="mb-0 ">Continue with Google</p>
+                        </a>
+                    </div>
+                    <div class="box">
+                        <a href="#" class="d-flex pt-2">
+                            <img src="{% static 'images/images.jpg' %}" class="mr-2" width="20" alt="">
+                            <p class="mb-0 ">Continue with Microsoft</p>
+                        </a>
+                    </div>
+
+                    <div class="box">
+                        <a href="#" class="d-flex pt-2">
+                            <img src="{% static 'images/apple-1.svg' %}" class="mr-2" width="20" alt="">
+                            <p class="mb-0 ">Continue with Apple</p>
+                        </a>
+                    </div>
+                    <div class="box">
+                        <a href="#" class="d-flex pt-2">
+                            <img src="{% static 'images/slack.png' %}" width="20" alt="">
+                            <p class="mb-0 ">Continue with Slack</p>
+                        </a>
+                    </div>
+                    <div class="dropdown-divider my-4"></div>
+                    <a class="text-decoration-none" href="{% url "auth:signin" %}">Already have an account? Log in</a>
+                </div>
+
+            </div>
+        </div>
+        <div class="col-4"><img src="{% static 'images/migration.svg' %}" class="position-fixed fixed-right"
+                                style="bottom: 0; width: 462px; right: 0" alt=""></div>
+    </div>
+</div>
+</body>
+</html>
